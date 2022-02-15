@@ -1,0 +1,25 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "MERN Shopping Cart App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kucse160235/E-Commerce-React.git"
+  },
+  "keywords": [
+    "afnan123"
+  ],
+  "author": "Mahfujur Rahman Afnan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kucse160235/E-Commerce-React/issues"
+  },
+  "homepage": "https://github.com/kucse160235/E-Commerce-React#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
