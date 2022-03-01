@@ -2,6 +2,7 @@
   "name": "proshop",
   "version": "1.0.0",
   "description": "MERN Shopping Cart App",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
@@ -23,8 +24,10 @@
   },
   "homepage": "https://github.com/kucse160235/E-Commerce-React#readme",
   "dependencies": {
+    "colors": "^1.4.0",
     "dotenv": "^16.0.0",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mongoose": "^6.2.4"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
