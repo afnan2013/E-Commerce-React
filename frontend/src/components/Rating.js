@@ -77,6 +77,7 @@ const Rating = ({ value, text, color }) => {
 // default value addition into a component
 Rating.defaultProps = {
   color: '#f8e825',
+  value: 0,
 };
 
 // value validation of a component
