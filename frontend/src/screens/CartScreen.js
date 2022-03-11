@@ -34,6 +34,10 @@ const CartScreen = ({ match, location, history }) => {
     dispatch(removeFromCart(id));
   };
 
+  const checkoutHanlder = () => {
+    history.push('/login?redirect=shipping');
+  };
+
   return (
     <Row>
       <Col md={8}>
@@ -87,7 +91,26 @@ const CartScreen = ({ match, location, history }) => {
       </Col>
       <Col md={4}>
         <Card>
-          <h2>Subtotal () items</h2>
+          <ListGroup>
+            <ListGroup.Item>
+              <h2>
+                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                items
+              </h2>
+              ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Button
+                type="button"
+                variant="dark"
+                className="w-100"
+                disabled={cartItems.length === 0}
+                onClick={checkoutHanlder}
+              >
+                Proceed To Checkout
+              </Button>
+            </ListGroup.Item>
+          </ListGroup>
         </Card>
       </Col>
     </Row>
