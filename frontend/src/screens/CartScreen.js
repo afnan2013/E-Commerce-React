@@ -11,7 +11,6 @@ import {
   Card,
 } from 'react-bootstrap';
 import Message from '../components/Message';
-import Loader from '../components/Loader';
 import { addToCart, removeFromCart } from '../actions/cartActions';
 
 const CartScreen = ({ match, location, history }) => {
@@ -97,7 +96,10 @@ const CartScreen = ({ match, location, history }) => {
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                 items
               </h2>
-              ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
+              $
+              {cartItems
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button
