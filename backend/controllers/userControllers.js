@@ -79,4 +79,32 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { userAuth, getUserProfile, registerUser };
+// @desc Update User Profile
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  //   console.log(user);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.password = req.body.password || user.password;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      id: updatedUser._id,
+      email: updatedUser.email,
+      name: updatedUser.name,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error('Not Authorised, Invalid Token.');
+  }
+});
+
+export { userAuth, getUserProfile, registerUser, updateUserProfile };
