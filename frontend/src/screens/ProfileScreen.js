@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { getUserDetails } from '../actions/userActions';
+import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import { UPDATE_USER_PROFILE_RESET } from '../constants/userAuthConstant';
 
 const ProfileScreen = ({ history, location }) => {
   const [name, setName] = useState('');
@@ -23,25 +24,29 @@ const ProfileScreen = ({ history, location }) => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
+  const updateUserDetails = useSelector((state) => state.updateUserDetails);
+  const { success } = updateUserDetails;
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: UPDATE_USER_PROFILE_RESET });
         dispatch(getUserDetails('profile'));
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, userInfo, history, user]);
+  }, [dispatch, userInfo, history, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage('Password do not match');
     } else {
-      // dispatch(updateUser(name, email, password));
+      dispatch(updateUserProfile('profile', name, email, password));
     }
   };
   return (
@@ -50,7 +55,7 @@ const ProfileScreen = ({ history, location }) => {
         <h1>User Profile</h1>
         {error && <Message variant={'danger'}>{error}</Message>}
         {message && <Message variant={'danger'}>{message}</Message>}
-
+        {success && <Message variant={'success'}>Profile Updated!</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name">
@@ -60,7 +65,6 @@ const ProfileScreen = ({ history, location }) => {
               placeholder="Enter name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             ></Form.Control>
           </Form.Group>
           <Form.Group controlId="email">
@@ -70,7 +74,6 @@ const ProfileScreen = ({ history, location }) => {
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             ></Form.Control>
           </Form.Group>
 
@@ -81,7 +84,6 @@ const ProfileScreen = ({ history, location }) => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             ></Form.Control>
           </Form.Group>
 
@@ -92,7 +94,6 @@ const ProfileScreen = ({ history, location }) => {
               placeholder="Enter password again"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              required
             ></Form.Control>
           </Form.Group>
 

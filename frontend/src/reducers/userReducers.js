@@ -1,4 +1,8 @@
 import {
+  UPDATE_USER_PROFILE_FAIL,
+  UPDATE_USER_PROFILE_REQUEST,
+  UPDATE_USER_PROFILE_RESET,
+  UPDATE_USER_PROFILE_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -55,14 +59,16 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
   }
 };
 
-export const updateUserReducer = (state = { user: {} }, action) => {
+export const updateUserDetailsReducer = (state = {}, action) => {
   switch (action.type) {
-    case USER_PROFILE_REQUEST:
-      return { ...state, loading: true };
-    case USER_PROFILE_SUCCESS:
-      return { loading: false, user: action.payload };
-    case USER_PROFILE_FAIL:
+    case UPDATE_USER_PROFILE_REQUEST:
+      return { loading: true };
+    case UPDATE_USER_PROFILE_SUCCESS:
+      return { loading: false, success: true, updatedUser: action.payload };
+    case UPDATE_USER_PROFILE_FAIL:
       return { loading: false, error: action.payload };
+    case UPDATE_USER_PROFILE_RESET:
+      return {};
     default:
       return state;
   }

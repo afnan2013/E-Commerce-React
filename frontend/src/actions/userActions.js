@@ -1,5 +1,8 @@
 import axios from 'axios';
 import {
+  UPDATE_USER_PROFILE_FAIL,
+  UPDATE_USER_PROFILE_REQUEST,
+  UPDATE_USER_PROFILE_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -134,3 +137,52 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     });
   }
 };
+
+export const updateUserProfile =
+  (id, name, email, password) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: UPDATE_USER_PROFILE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/users/${id}`,
+        { name, email, password },
+        config
+      );
+
+      dispatch({
+        type: UPDATE_USER_PROFILE_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem(
+        'userInfo',
+        JSON.stringify(getState().userLogin.userInfo)
+      );
+    } catch (error) {
+      dispatch({
+        type: UPDATE_USER_PROFILE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.response,
+      });
+    }
+  };
