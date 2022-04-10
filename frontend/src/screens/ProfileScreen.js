@@ -31,15 +31,15 @@ const ProfileScreen = ({ history, location }) => {
     if (!userInfo) {
       history.push('/login');
     } else {
-      if (!user || !user.name || success) {
-        dispatch({ type: UPDATE_USER_PROFILE_RESET });
+      if (!user || !user.name) {
+        //
         dispatch(getUserDetails('profile'));
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, userInfo, history, user, success]);
+  }, [dispatch, userInfo, history, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();

@@ -172,6 +172,11 @@ export const updateUserProfile =
         payload: data,
       });
 
+      dispatch({
+        type: USER_PROFILE_SUCCESS,
+        payload: (({ token, ...o }) => o)(data),
+      });
+
       localStorage.setItem(
         'userInfo',
         JSON.stringify(getState().userLogin.userInfo)
