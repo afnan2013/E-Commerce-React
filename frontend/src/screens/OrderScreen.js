@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
+import { PayPalButton } from 'react-paypal-button-v2';
 import { Col, ListGroup, Row, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getOrderDetails } from '../actions/orderActions';
+import axios from 'axios';
 
 const OrderScreen = ({ match, history }) => {
   const { loading, order, error } = useSelector((state) => state.orderDetails);
@@ -18,6 +20,12 @@ const OrderScreen = ({ match, history }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get('/api/config/paypal');
+      console.log(clientId);
+    };
+
+    addPayPalScript();
     if (!order || order._id !== match.params.id)
       dispatch(getOrderDetails(match.params.id));
   }, [match, history]);
@@ -138,6 +146,9 @@ const OrderScreen = ({ match, history }) => {
                       <Col>Total:</Col>
                       <Col>${order.totalPrice}</Col>
                     </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <PayPalButton></PayPalButton>
                   </ListGroup.Item>
                 </ListGroup>
               </Card>
