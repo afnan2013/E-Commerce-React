@@ -39,7 +39,7 @@ const ProfileScreen = ({ history, location }) => {
         setEmail(user.email);
       }
     }
-  }, [dispatch, userInfo, history, user]);
+  }, [dispatch, userInfo, history, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
